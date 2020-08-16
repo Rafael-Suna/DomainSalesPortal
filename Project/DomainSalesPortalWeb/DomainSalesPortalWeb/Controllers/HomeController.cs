@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using DomainSalesPortalWeb.Models;
+using DomainSalesPortalWeb.Services;
+using Newtonsoft.Json;
 
 namespace DomainSalesPortalWeb.Controllers
 {
@@ -28,6 +30,24 @@ namespace DomainSalesPortalWeb.Controllers
             return View();
         }
 
+
+        public JsonResult GetDomainInformation(string domain)
+        {
+
+            var result = RDapService.SearchDomain(domain);
+
+            if (result !=null)
+            {
+                DomainSearchVM entity = JsonConvert.DeserializeObject<DomainSearchVM>(result.ToString());
+
+                return Json(entity);
+            }
+            else
+            {
+                return Json("");
+            }
+            
+        }
 
 
 

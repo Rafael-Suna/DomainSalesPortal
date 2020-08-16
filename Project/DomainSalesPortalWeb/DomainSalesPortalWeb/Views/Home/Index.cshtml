@@ -7,11 +7,11 @@
 
     <div class="" style="background-color:white!important">
 
-        <input placeholder="Search Domains" class="form-control-lg" style="
+        <input id="domainName" placeholder=".com / .net / .org " class="form-control-lg" style="
     width: 75%;
 ">
 
-        <a href="#" class="btn btn-primary btn-lg" style="
+        <a href="#" class="btnSearch btn btn-primary btn-lg" style="
     margin-top: -10px;
 ">Search</a>
 
@@ -29,4 +29,30 @@
 
     </div>
 </div>
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        $(".btnSearch").click(function () {
+
+            var DomainName = document.getElementById('domainName').value;
+            if (DomainName.trim()) {
+                $.post("Home/GetDomainInformation",
+                    {
+                        domain: DomainName
+                    },
+                    function (data, status) {
+                        alert("Data: " + data + "\nStatus: " + status);
+                    });
+            }
+
+        
+        });
+    </script>
+
+
+
+}
 
