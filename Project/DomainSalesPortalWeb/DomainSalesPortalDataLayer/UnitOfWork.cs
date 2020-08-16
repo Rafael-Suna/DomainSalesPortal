@@ -4,10 +4,8 @@
     
     They have never in any way contributed to this code, and the false attribution has been reported to StackOverflow. */
 
-using CustomerSalesPortalDataLayer.Repositories.Customer;
+using CustomerSalesPortalDataLayer.Repositories;
 using DomainSalesPortalDataLayer.Repositories;
-using DomainSalesPortalDataLayer.Repositories.Customer;
-using DomainSalesPortalDataLayer.Repositories.Domain;
 using System;
 using System.Data;
 using System.Data.SqlClient;

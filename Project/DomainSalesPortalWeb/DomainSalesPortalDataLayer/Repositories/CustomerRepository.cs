@@ -34,16 +34,21 @@ namespace DomainSalesPortalDataLayer.Repositories
 
         public void Add(Customer entity)
         {
-            if (entity == null)
-                throw new ArgumentNullException("entity");
-
-            entity.Id = Connection.ExecuteScalar<int>(
-                "INSERT INTO Domain(BreedId, Name, Age) VALUES(@BreedId, @Name, @Age); SELECT SCOPE_IDENTITY()",
-                param: new { BreedId = entity.BreedId, Name = entity.Name, Age = entity.Age },
-                transaction: Transaction
-            );
+            throw new NotImplementedException();
         }
 
-      
+        //public void Add(Customer entity)
+        //{
+        //    if (entity == null)
+        //        throw new ArgumentNullException("entity");
+
+        //    entity.Id = Connection.ExecuteScalar<int>(
+        //        "INSERT INTO Domain(BreedId, Name, Age) VALUES(@BreedId, @Name, @Age); SELECT SCOPE_IDENTITY()",
+        //        param: new { BreedId = entity.BreedId, Name = entity.Name, Age = entity.Age },
+        //        transaction: Transaction
+        //    );
+        //}
+
+
     }
 }
