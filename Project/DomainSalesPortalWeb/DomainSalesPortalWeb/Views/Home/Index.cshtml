@@ -21,7 +21,7 @@
 
             <textarea id="txtinfo" style="height: 492px;width: 84%;margin-top: 20px;margin-bottom: 0px;/* margin-left: -17px; */" spellcheck="false"></textarea>
 
-            <a href="#" class="btn btn-warning " style="
+            <a href="#" class="btnFav btn btn-warning " style="
     position: absolute;
     margin-top: 445px;
     margin-left: -141px;
@@ -38,6 +38,9 @@
 @section Scripts{
 
     <script type="text/javascript">
+
+
+        var SearchedDomainEntity = null;
 
         $(".btnSearch").click(function () {
   
@@ -62,6 +65,12 @@
                             document.getElementById("txtinfo").value = TextInfo;
                             return;
                         }
+
+
+
+                        SearchedDomainEntity = data;
+
+
                         TextInfo += "Domain Name : " + data.ldhName + "\n";
 
 
@@ -93,6 +102,40 @@
          
           
         });
+
+
+        $(".btnFav").click(function () {
+
+
+            var TextInfo = "";
+
+
+            $("button").removeClass("invisible");
+
+            if (SearchedDomainEntity != null) {
+                $.post("Home/AddFavourite",
+                    {
+                        FavouriteData: SearchedDomainEntity
+                    },
+                    function (data, status) {
+
+
+                   
+
+                        $("button").addClass("invisible");
+
+                    });
+            }
+
+
+
+
+        });
+        
+
+
+
+
     </script>
 
 

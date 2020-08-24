@@ -8,6 +8,10 @@ using Microsoft.Extensions.Logging;
 using DomainSalesPortalWeb.Models;
 using DomainSalesPortalWeb.Services;
 using Newtonsoft.Json;
+using DomainSalesPortalDataLayer;
+using Microsoft.Extensions.Configuration;
+using DomainSalesPortalDataLayer.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace DomainSalesPortalWeb.Controllers
 {
@@ -15,9 +19,18 @@ namespace DomainSalesPortalWeb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        UnitOfWork _uwo;
+
+        IConfiguration _configuration;
+
+        public HomeController(ILogger<HomeController> logger, IConfiguration Configuration)
         {
             _logger = logger;
+            _configuration = Configuration;
+
+
+           string connectionString = _configuration.GetConnectionString("Constr");
+            _uwo = new UnitOfWork(connectionString);
         }
 
         public IActionResult Index()
@@ -29,6 +42,34 @@ namespace DomainSalesPortalWeb.Controllers
         {
             return View();
         }
+        [Route("Login")]
+        public IActionResult Login()
+        {
+            return View();
+
+        }
+        [HttpPost]
+        public IActionResult Login(string email, string Password)
+        {
+
+
+            var result =_uwo.CustomerRepository.Login(email, Password);
+
+
+            if (result!=null)
+            {
+                HttpContext.Session.SetString("User", $"{result.Name} - {result.Surname}");
+            }
+
+
+            return View();
+
+        }
+
+     
+
+
+
 
 
         public JsonResult GetDomainInformation(string domain)
@@ -47,9 +88,57 @@ namespace DomainSalesPortalWeb.Controllers
         }
 
 
-
-        public JsonResult AddFavourite(string domain)
+      
+        public JsonResult AddFavourite(DomainSearchVM FavouriteData)
         {
+
+
+            Domain newRecord = new Domain()
+            {
+                CustomerId=1,
+                IsActive = true,
+                Name = FavouriteData.ldhName,
+                NS1 = FavouriteData.nameservers[0].ldhName,
+                NS2 = FavouriteData.nameservers[1].ldhName,
+                IsFavourite = true,
+                LastChange=FavouriteData.events[1].eventDate,
+                ExpiredDate = FavouriteData.events[2].eventDate
+
+
+
+            };
+
+
+            try
+            {
+                _uwo.DomainRepository.Add(newRecord);
+                _uwo.Commit();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+
+
+            //using (var uow = new UnitOfWork("LosGatos"))
+            //{
+
+
+
+
+
+            //    uow.DomainRepository.Add.Insert(breed1);
+            //    uow.BreedRepository.Insert(breed2);
+            //    cat1.BreedId = breed1.BreedId;
+            //    cat2.BreedId = breed1.BreedId;
+            //    cat3.BreedId = breed2.BreedId;
+            //    uow.CatRepository.Insert(cat1);
+            //    uow.CatRepository.Insert(cat2);
+            //    uow.CatRepository.Insert(cat3);
+            //    uow.SaveChanges();
+            //}
 
             return Json("");
         }
