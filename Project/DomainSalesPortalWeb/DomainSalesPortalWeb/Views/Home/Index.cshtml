@@ -2,22 +2,26 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4" style="margin:15px">Domain Search Page</h1>
+    <div class="text-center">
+        <button class="btSpinner btn btn-primary invisible" type="button" disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+        <h1 class="display-4" style="margin:15px">Domain Search Page</h1>
 
-    <div class="" style="background-color:white!important">
+        <div class="" style="background-color:white!important">
 
-        <input id="domainName" placeholder=".com / .net / .org " class="form-control-lg" style="
+            <input id="domainName" placeholder=".com / .net / .org " class="form-control-lg" style="
     width: 75%;
 ">
 
-        <a href="#" class="btnSearch btn btn-primary btn-lg" style="
+            <a href="#" class="btnSearch btn btn-primary btn-lg" style="
     margin-top: -10px;
 ">Search</a>
 
-        <textarea style="height: 492px;width: 84%;margin-top: 20px;margin-bottom: 0px;/* margin-left: -17px; */" spellcheck="false"></textarea>
+            <textarea id="txtinfo" style="height: 492px;width: 84%;margin-top: 20px;margin-bottom: 0px;/* margin-left: -17px; */" spellcheck="false"></textarea>
 
-        <a href="#" class="btn btn-warning " style="
+            <a href="#" class="btn btn-warning " style="
     position: absolute;
     margin-top: 445px;
     margin-left: -141px;
@@ -27,8 +31,8 @@
 
 
 
+        </div>
     </div>
-</div>
 
 
 @section Scripts{
@@ -36,7 +40,13 @@
     <script type="text/javascript">
 
         $(".btnSearch").click(function () {
+  
 
+            var TextInfo = "";
+
+
+            $("button").removeClass("invisible");
+            document.getElementById("txtinfo").value = "";
             var DomainName = document.getElementById('domainName').value;
             if (DomainName.trim()) {
                 $.post("Home/GetDomainInformation",
@@ -44,11 +54,44 @@
                         domain: DomainName
                     },
                     function (data, status) {
-                        alert("Data: " + data + "\nStatus: " + status);
+
+
+                        if (data == null) {
+                            TextInfo = "Domain Bilgisi Bulunamadı";
+                            $("button").addClass("invisible");
+                            document.getElementById("txtinfo").value = TextInfo;
+                            return;
+                        }
+                        TextInfo += "Domain Name : " + data.ldhName + "\n";
+
+
+                        //for (var i = 0; i < data.nameservers; i++) {
+                            
+                        //    TextInfo += "Name Servers : " + data.nameservers[i].ldhName + "\n";
+                            
+                             
+                        //}
+                        $.each(data.nameservers, function (index, value) {
+                            TextInfo += "Name Servers : " + value.ldhName + "\n";
+                        });
+
+                        $.each(data.events, function (index, value) {
+                            TextInfo += value.eventAction + " : " + value.eventDate + "\n";
+                        });
+
+
+
+                        document.getElementById("txtinfo").value = TextInfo;
+
+                        $("button").addClass("invisible");
+                     
+                        //document.getElementById("txtinfo").value += "Domain Name : " + data.ldhName + "\n";
                     });
             }
 
-        
+         
+         
+          
         });
     </script>
 

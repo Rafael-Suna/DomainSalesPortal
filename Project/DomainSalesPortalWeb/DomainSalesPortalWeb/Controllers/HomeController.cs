@@ -35,19 +35,28 @@ namespace DomainSalesPortalWeb.Controllers
         {
 
             var result = RDapService.SearchDomain(domain);
-
+            DomainSearchVM entity = null;
             if (result !=null)
             {
-                DomainSearchVM entity = JsonConvert.DeserializeObject<DomainSearchVM>(result.ToString());
+                 entity = JsonConvert.DeserializeObject<DomainSearchVM>(result.ToString());
 
-                return Json(entity);
+                
             }
-            else
-            {
-                return Json("");
-            }
-            
+
+            return Json(entity);
         }
+
+
+
+        public JsonResult AddFavourite(string domain)
+        {
+
+            return Json("");
+        }
+
+
+
+
 
 
 
