@@ -18,7 +18,7 @@ namespace DomainSalesPortalWeb.Services
 
             var client = new RestClient($"https://rdap.verisign.com/com/v1/domain/{domain}");
             client.Timeout = -1;
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
 
             if (response.IsSuccessful)
