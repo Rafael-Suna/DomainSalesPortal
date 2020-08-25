@@ -20,7 +20,7 @@ namespace DomainSalesPortalDataLayer.Repositories
                 throw new ArgumentNullException("entity");
 
            Connection.ExecuteScalar<int>(
-                "INSERT INTO Domain(IsActive, CustomerId, Name,NS1,NS2,LastChange,ExpiredDate,IsFavourite) VALUES(@IsActive, @CustomerId, @Name,@NS1,@NS2,@LastChange,@ExpiredDate,@IsFavourite);",
+                "INSERT INTO Domains(IsActive, CustomerId, Name,NS1,NS2,LastChange,ExpiredDate,IsFavourite) VALUES(@IsActive, @CustomerId, @Name,@NS1,@NS2,@LastChange,@ExpiredDate,@IsFavourite);",
                 param: new { IsActive=true, CustomerId=entity.CustomerId, Name=entity.Name, NS1=entity.NS1, NS2= entity.NS2, LastChange=entity.LastChange, ExpiredDate=entity.ExpiredDate, IsFavourite=true },
                 transaction: Transaction
             );
@@ -47,7 +47,7 @@ namespace DomainSalesPortalDataLayer.Repositories
         public void Remove(int id)
         {
             Connection.Execute(
-                "UPDATE Domain SET IsActive = @IsActive, IsFavourite=@IsFavourite WHERE id = @DomainId",
+                "UPDATE Domains SET IsActive = @IsActive, IsFavourite=@IsFavourite WHERE id = @DomainId",
                 param: new { IsActive = false, IsFavourite = false, DomainId = id},
                 transaction: Transaction
             );

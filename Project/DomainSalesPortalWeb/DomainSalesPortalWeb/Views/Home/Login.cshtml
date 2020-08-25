@@ -36,7 +36,7 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-black">Login</button>
-                <button type="submit" class="btn btn-secondary">Register</button>
+                <button type="submit" class="btn btn-secondary" asp-action="Register" asp-controller="Home"  formmethod="get" >Register</button>
             </form>
 
         </div>

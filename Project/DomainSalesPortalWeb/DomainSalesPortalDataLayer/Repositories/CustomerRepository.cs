@@ -16,7 +16,7 @@ namespace DomainSalesPortalDataLayer.Repositories
         public Customer Login(string email, string password)
         {
             return Connection.Query<Customer>(
-               "SELECT * FROM Customer WHERE Email = @Email and Password=@Password",
+               "SELECT * FROM Customers WHERE Email = @Email and Password=@Password",
                param: new { Email = email , Password=password},
                transaction: Transaction
            ).FirstOrDefault();
@@ -26,7 +26,7 @@ namespace DomainSalesPortalDataLayer.Repositories
         public Customer Find(int id)
         {
             return Connection.Query<Customer>(
-                "SELECT * FROM Customer WHERE DomainId = @DomainId",
+                "SELECT * FROM Customers WHERE DomainId = @DomainId",
                 param: new { DomainId = id },
                 transaction: Transaction
             ).FirstOrDefault();
@@ -34,7 +34,15 @@ namespace DomainSalesPortalDataLayer.Repositories
 
         public void Add(Customer entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                return;
+
+
+            entity.Id = Connection.ExecuteScalar<int>(
+                "INSERT INTO Customers(Name, Surname, FullName,Email,RegisteredDate,Password) VALUES(@Name, @Surname, @FullName,@Email,@RegisteredDate,@Password);",
+                param: new { Name= entity.Name, Surname=entity.Surname, FullName=entity.FullName, Email=entity.Email, RegisteredDate=entity.RegisteredDate, Password=entity.Password },
+                transaction: Transaction
+            );
         }
 
         //public void Add(Customer entity)

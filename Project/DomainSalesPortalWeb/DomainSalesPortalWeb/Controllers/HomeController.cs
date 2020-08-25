@@ -47,13 +47,25 @@ namespace DomainSalesPortalWeb.Controllers
 
             var sessionContext = HttpContext.Session.GetString("User");
 
+        
+
             if (sessionContext == null)
             {
                 return RedirectToAction("Login");
             }
-
+            ViewBag.UserName = sessionContext;
             return View();
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            ViewBag.UserName = "";
+            return RedirectToAction("Login");
+        }   
+
+
+
 
         public IActionResult Favourite()
         {
@@ -78,19 +90,74 @@ namespace DomainSalesPortalWeb.Controllers
                 if (result != null)
                 {
                     HttpContext.Session.SetString("User", $"{result.Name} - {result.Surname}");
+
+                    return RedirectToAction("Index");
                 }
 
 
-                return View();
+    
 
             }
 
             return View();
         }
 
-     
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterCustomerVM newRecord)
+        {
+
+            if (ModelState.IsValid)
+            {
 
 
+                try
+                {
+
+                    newRecord.RegisteredDate = DateTime.Now;
+                    newRecord.FullName = newRecord.Name + newRecord.Surname;
+
+                    Customer newCustomer = new Customer()
+                    {
+                        Name = newRecord.Name,
+                        Surname = newRecord.Surname,
+                        Email = newRecord.Email,
+                        FullName = newRecord.FullName,
+                        Password = newRecord.Password,
+                        RegisteredDate = newRecord.RegisteredDate
+                    };
+
+
+
+
+                    _uwo.CustomerRepository.Add(newCustomer);
+                    _uwo.Commit();
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+
+
+
+                return RedirectToAction("Login");
+
+            }
+
+          
+
+            return View();
+
+        }
 
 
 

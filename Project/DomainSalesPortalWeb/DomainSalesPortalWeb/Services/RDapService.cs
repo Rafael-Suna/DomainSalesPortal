@@ -16,7 +16,7 @@ namespace DomainSalesPortalWeb.Services
             if (string.IsNullOrEmpty(domain))
             return null;
 
-            var client = new RestClient($"https://rdap.nicproxy.com/domain/{domain}");
+            var client = new RestClient($"https://rdap.verisign.com/com/v1/domain/{domain}");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             IRestResponse response = client.Execute(request);
