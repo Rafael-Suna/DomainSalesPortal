@@ -19,6 +19,8 @@ namespace DomainSalesPortalWeb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+   
+
         UnitOfWork _uwo;
 
         IConfiguration _configuration;
@@ -69,7 +71,13 @@ namespace DomainSalesPortalWeb.Controllers
 
         public IActionResult Favourite()
         {
-            return View();
+
+
+            int UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
+
+
+            var result = _uwo.DomainRepository.FindByCustomerId(UserId);
+            return View(result);
         }
 
         public IActionResult Login()
@@ -90,6 +98,8 @@ namespace DomainSalesPortalWeb.Controllers
                 if (result != null)
                 {
                     HttpContext.Session.SetString("User", $"{result.Name} - {result.Surname}");
+
+                    HttpContext.Session.SetString("UserId", result.Id.ToString());
 
                     return RedirectToAction("Index");
                 }
@@ -181,11 +191,12 @@ namespace DomainSalesPortalWeb.Controllers
         public JsonResult AddFavourite(DomainSearchVM FavouriteData)
         {
 
-
+            int UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
             Domain newRecord = new Domain()
             {
-                CustomerId=1,
-                IsActive = true,
+           
+                CustomerId = UserId,
+                 IsActive = true,
                 Name = FavouriteData.ldhName,
                 NS1 = FavouriteData.nameservers[0].ldhName,
                 NS2 = FavouriteData.nameservers[1].ldhName,
