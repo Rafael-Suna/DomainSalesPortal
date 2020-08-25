@@ -3,6 +3,13 @@
     ViewData["Title"] = "Login";
 }
 
+
+
+
+
+@model DomainSalesPortalWeb.Models.LoginViewModel
+
+<link href="~/css/Login.css" rel="stylesheet" />
 <div class="sidenav">
     <div class="login-main-text">
         <h2>Domain Sales Portal<br> Login Page</h2>
@@ -11,20 +18,30 @@
 </div>
 <div class="main">
     <div class="col-md-6 col-sm-12">
+
+
+     
         <div class="login-form">
-            <form>
+
+
+            <form asp-action="Login" asp-controller="Home" method="post">
                 <div class="form-group">
-                    <label>User Name</label>
-                    <input type="text" class="form-control" placeholder="User Name">
+                    <label>Email</label>
+                    <input type="text" class="form-control" asp-for="Email" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-black">Login</button>
                 <button type="submit" class="btn btn-secondary">Register</button>
             </form>
+
         </div>
+
+
     </div>
 </div>
 

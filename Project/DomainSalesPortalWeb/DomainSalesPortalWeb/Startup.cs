@@ -6,6 +6,7 @@ using DomainSalesPortalDataLayer.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +26,9 @@ namespace DomainSalesPortalWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+          
+            services.AddSession();
 
             //string connectionString = Configuration.GetConnectionString("Constr");
 
@@ -48,7 +52,7 @@ namespace DomainSalesPortalWeb
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -58,8 +62,15 @@ namespace DomainSalesPortalWeb
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
+         //   var options = new RewriteOptions()
+         //   .AddRedirectToHttpsPermanent()
+         //   .AddRedirect("redirect-rule/(.*)", "redirected/$1")
+         //   .AddRewrite(@"^rewrite-rule/(\d+)/(\d+)", "rewritten?var1=$1&var2=$2",
+         //       skipRemainingRules: true);
 
-    
+
+         //app.UseRewriter(options);
+
         }
     }
 }

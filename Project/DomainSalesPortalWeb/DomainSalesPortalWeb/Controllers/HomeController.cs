@@ -35,6 +35,23 @@ namespace DomainSalesPortalWeb.Controllers
 
         public IActionResult Index()
         {
+
+            var checkKey = HttpContext.Session.Keys.ToList();
+
+            if (checkKey.Count == 0)
+            {
+                
+
+                return RedirectToAction("Login");
+            }
+
+            var sessionContext = HttpContext.Session.GetString("User");
+
+            if (sessionContext == null)
+            {
+                return RedirectToAction("Login");
+            }
+
             return View();
         }
 
@@ -42,28 +59,33 @@ namespace DomainSalesPortalWeb.Controllers
         {
             return View();
         }
-        [Route("Login")]
+
         public IActionResult Login()
         {
             return View();
 
         }
         [HttpPost]
-        public IActionResult Login(string email, string Password)
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(LoginViewModel record)
         {
 
-
-            var result =_uwo.CustomerRepository.Login(email, Password);
-
-
-            if (result!=null)
+            if (ModelState.IsValid)
             {
-                HttpContext.Session.SetString("User", $"{result.Name} - {result.Surname}");
+                var result = _uwo.CustomerRepository.Login(record.Email, record.Password);
+
+
+                if (result != null)
+                {
+                    HttpContext.Session.SetString("User", $"{result.Name} - {result.Surname}");
+                }
+
+
+                return View();
+
             }
 
-
             return View();
-
         }
 
      
