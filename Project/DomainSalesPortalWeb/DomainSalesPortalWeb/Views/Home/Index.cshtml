@@ -31,7 +31,9 @@
 
 
 
-
+            <div class="alert alert-success invisible" role="alert">
+               Success
+            </div>
 
         </div>
     </div>
@@ -122,9 +124,17 @@
                     function (data, status) {
 
 
-                   
-
                         $("button").addClass("invisible");
+
+                        if (data == "Success") {
+                            $(".alert").removeClass("invisible");
+
+                            $(".alert").delay(800).fadeIn(400);
+
+                            $(".alert").addClass("invisible");
+
+
+                        }
 
                     });
             }

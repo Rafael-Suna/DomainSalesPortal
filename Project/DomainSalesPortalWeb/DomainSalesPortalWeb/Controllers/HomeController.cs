@@ -187,21 +187,21 @@ namespace DomainSalesPortalWeb.Controllers
         }
 
 
-      
+
         public JsonResult AddFavourite(DomainSearchVM FavouriteData)
         {
 
             int UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
             Domain newRecord = new Domain()
             {
-           
+
                 CustomerId = UserId,
-                 IsActive = true,
+                IsActive = true,
                 Name = FavouriteData.ldhName,
                 NS1 = FavouriteData.nameservers[0].ldhName,
                 NS2 = FavouriteData.nameservers[1].ldhName,
                 IsFavourite = true,
-                LastChange=FavouriteData.events[1].eventDate,
+                LastChange = FavouriteData.events[1].eventDate,
                 ExpiredDate = FavouriteData.events[2].eventDate
 
 
@@ -211,36 +211,26 @@ namespace DomainSalesPortalWeb.Controllers
 
             try
             {
-                _uwo.DomainRepository.Add(newRecord);
-                _uwo.Commit();
+
+                var FavouriteDataCheck = _uwo.DomainRepository.FindByCustomerId(UserId).Where(x => x.Name == newRecord.Name).FirstOrDefault();
+
+                if (FavouriteDataCheck == null)
+                {
+                    _uwo.DomainRepository.Add(newRecord);
+                    _uwo.Commit();
+                }
+
+                return Json("Success");
+
+
+
             }
             catch (Exception ex)
             {
 
-                throw;
+                return Json(ex.Message.ToString());
             }
 
-
-
-            //using (var uow = new UnitOfWork("LosGatos"))
-            //{
-
-
-
-
-
-            //    uow.DomainRepository.Add.Insert(breed1);
-            //    uow.BreedRepository.Insert(breed2);
-            //    cat1.BreedId = breed1.BreedId;
-            //    cat2.BreedId = breed1.BreedId;
-            //    cat3.BreedId = breed2.BreedId;
-            //    uow.CatRepository.Insert(cat1);
-            //    uow.CatRepository.Insert(cat2);
-            //    uow.CatRepository.Insert(cat3);
-            //    uow.SaveChanges();
-            //}
-
-            return Json("");
         }
 
 
