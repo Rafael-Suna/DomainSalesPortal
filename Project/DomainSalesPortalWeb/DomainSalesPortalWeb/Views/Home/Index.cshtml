@@ -4,26 +4,27 @@
 
 
 
-    <div class="text-center">
-        <button class="btSpinner btn btn-primary invisible" type="button" disabled>
-            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-            Loading...
-        </button>
-        <h1 class="display-4" style="margin:15px">Domain Search Page</h1>
+<div class="text-center">
+    <button class="btSpinner btn btn-primary invisible" type="button" disabled>
+        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        Loading...
+    </button>
 
-        <div class="" style="background-color:white!important">
+    <h1 class="display-4" style="margin:15px">Domain Search Page</h1>
 
-            <input id="domainName" placeholder=".com / .net / .org " class="form-control-lg" style="
+    <div class="" style="background-color:white!important">
+
+        <input id="domainName" placeholder=".com / .net / .org " class="form-control-lg" style="
     width: 75%;
 ">
 
-            <a href="#" class="btnSearch btn btn-primary btn-lg" style="
+        <a href="#" class="btnSearch btn btn-primary btn-lg" style="
     margin-top: -10px;
 ">Search</a>
 
-            <textarea id="txtinfo" style="height: 492px;width: 84%;margin-top: 20px;margin-bottom: 0px;/* margin-left: -17px; */" spellcheck="false"></textarea>
+        <textarea id="txtinfo" style="height: 492px;width: 84%;margin-top: 20px;margin-bottom: 0px;/* margin-left: -17px; */" spellcheck="false"></textarea>
 
-            <a href="#" class="btnFav btn btn-warning " style="
+        <a href="#" class="btnFav btn btn-warning " style="
     position: absolute;
     margin-top: 445px;
     margin-left: -141px;
@@ -31,12 +32,11 @@
 
 
 
-            <div class="alert alert-success invisible" role="alert">
-               Success
-            </div>
 
-        </div>
+
     </div>
+</div>
+
 
 
 @section Scripts{
@@ -46,8 +46,9 @@
 
         var SearchedDomainEntity = null;
 
+
         $(".btnSearch").click(function () {
-  
+
 
             var TextInfo = "";
 
@@ -79,10 +80,10 @@
 
 
                         //for (var i = 0; i < data.nameservers; i++) {
-                            
+
                         //    TextInfo += "Name Servers : " + data.nameservers[i].ldhName + "\n";
-                            
-                             
+
+
                         //}
                         $.each(data.nameservers, function (index, value) {
                             TextInfo += "Name Servers : " + value.ldhName + "\n";
@@ -97,14 +98,14 @@
                         document.getElementById("txtinfo").value = TextInfo;
 
                         $("button").addClass("invisible");
-                     
+
                         //document.getElementById("txtinfo").value += "Domain Name : " + data.ldhName + "\n";
                     });
             }
 
-         
-         
-          
+
+
+
         });
 
 
@@ -126,15 +127,22 @@
 
                         $("button").addClass("invisible");
 
+
+
                         if (data == "Success") {
-                            $(".alert").removeClass("invisible");
 
-                            $(".alert").delay(800).fadeIn(400);
 
-                            $(".alert").addClass("invisible");
+                            $(".alert").delay(1000).fadeIn(400);
+                        
+                            $(".alert").delay(2000).fadeOut(400);
 
 
                         }
+
+
+
+
+                 
 
                     });
             }
@@ -143,7 +151,7 @@
 
 
         });
-        
+
 
 
 
