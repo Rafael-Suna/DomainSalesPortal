@@ -3,13 +3,16 @@
     ViewData["Title"] = "Favourite";
 }
 
+
+
+
 <h1>Favourite</h1>
 
 <div class="table-responsive-xl">
     <table class="table">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">#</th>
+                <th scope="col" style="width:50px;">#</th>
                 <th scope="col">Domain</th>
                 <th scope="col">NS1</th>
                 <th scope="col">NS2</th>
@@ -20,18 +23,24 @@
         <tbody>
             @foreach (var item in Model.ToList())
             {
-            <tr>
-                <th><input type="checkbox" data-id="@item.Id"></th>
-                <td>@item.Name</td>
-                <td>@item.NS1</td>
-                <td>@item.NS2</td>
-                <td>@item.LastChange</td>
-                <td>@item.ExpiredDate</td>
-            </tr>
+                <tr>
+                    <th ><input type="checkbox" data-id="@item.Id"></th>
+                    <td>@item.Name</td>
+                    <td>@item.NS1</td>
+                    <td>@item.NS2</td>
+                    <td>@item.LastChange</td>
+                    <td>@item.ExpiredDate</td>
+                </tr>
             }
 
-           
+
         </tbody>
     </table>
+    <div style="float:right">
+
+        <button class="btn btn-outline-success">Refresh</button>
+        <button class="btn btn-outline-danger">Remove Favourite</button>
+    </div>
+ 
 
 </div>
