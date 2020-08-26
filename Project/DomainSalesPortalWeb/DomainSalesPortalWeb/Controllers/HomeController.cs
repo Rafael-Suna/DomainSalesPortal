@@ -234,6 +234,34 @@ namespace DomainSalesPortalWeb.Controllers
         }
 
 
+        [HttpPost]
+        public JsonResult RemoveFavourite(string Domains)
+        {
+            try
+            {
+                var result =  Domains.Split(",");
+
+                foreach (var item in result)
+                {
+
+                    var domainId = Convert.ToInt32(item.ToString());
+
+
+                    _uwo.DomainRepository.Remove(domainId);
+                    _uwo.Commit();
+                }
+            
+                return Json(Domains);
+
+
+             
+            }
+            catch (Exception ex)
+            {
+
+                return Json("Error");
+            }
+        }
 
 
 

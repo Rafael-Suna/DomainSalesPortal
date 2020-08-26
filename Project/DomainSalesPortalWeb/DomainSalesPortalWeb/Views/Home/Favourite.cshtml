@@ -23,8 +23,8 @@
         <tbody>
             @foreach (var item in Model.ToList())
             {
-                <tr>
-                    <th ><input type="checkbox" data-id="@item.Id"></th>
+                <tr id = "@item.Id">
+                    <th><input type="checkbox" class="ckbox" value="@item.Id" data-id="@item.Id"></th>
                     <td>@item.Name</td>
                     <td>@item.NS1</td>
                     <td>@item.NS2</td>
@@ -38,9 +38,64 @@
     </table>
     <div style="float:right">
 
-        <button class="btn btn-outline-success">Refresh</button>
-        <button class="btn btn-outline-danger">Remove Favourite</button>
+        <button class="btn btn-outline-success" asp-action="Favourite" asp-controller="Home" >Refresh</button>
+        <button class="btnFavourite btn btn-outline-danger">Remove Favourite</button>
     </div>
- 
+
 
 </div>
+
+@section Scripts{
+
+    <script>
+        $(".btnFavourite").click(function () {
+
+            var checkedVals = $('.ckbox:checkbox:checked').map(function () {
+                return this.value;
+            }).get();
+        
+            var CheckedList = checkedVals.join(",");
+            $.post("RemoveFavourite",
+                {
+                    Domains:CheckedList
+                },
+                function (data, status) {
+
+
+
+
+
+                    if (data != "Error") {
+
+
+                        $(".alert").delay(1000).fadeIn(400);
+
+                        $(".alert").delay(2000).fadeOut(400);
+
+
+                        var valNew = data.split(',');
+
+                      
+                        for (var i = 0; i < valNew.length; i++) {
+
+
+                            $("#" +valNew[i]+"").remove(); 
+                        }
+                       
+                    }
+
+
+
+
+
+
+                });
+        });
+    </script>
+
+
+
+
+
+
+}

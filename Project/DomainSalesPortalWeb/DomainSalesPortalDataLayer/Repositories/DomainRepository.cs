@@ -38,7 +38,7 @@ namespace DomainSalesPortalDataLayer.Repositories
         public IEnumerable<Domain> FindByCustomerId(int customerId)
         {
             return Connection.Query<Domain>(
-                "SELECT * FROM Domains where CustomerId = @CustomerId",
+                "SELECT * FROM Domains where CustomerId = @CustomerId and IsActive = 1",
                 param: new { CustomerId = customerId },
                 transaction: Transaction
             ).ToList();
