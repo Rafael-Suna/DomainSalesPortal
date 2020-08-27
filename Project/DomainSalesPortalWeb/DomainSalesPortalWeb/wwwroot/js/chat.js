@@ -28,7 +28,7 @@ async function start() {
         console.log("connected");
     } catch (err) {
         console.log(err);
-        setTimeout(() => start(), 5000);
+        setTimeout(() => start(), 2000);
     }
 };
 
@@ -52,8 +52,13 @@ connection.on("ReceiveDomains", function (data) {
         var id = value.id;
         var trClass = value.class;
 
-        alert(id + trClass);
-        $('#favTable tbody > tr').eq(id).addClass(trClass);
+     
+
+   
+
+        $("#" + id + "").addClass(trClass);
+
+
 
     });
         console.log(data);
