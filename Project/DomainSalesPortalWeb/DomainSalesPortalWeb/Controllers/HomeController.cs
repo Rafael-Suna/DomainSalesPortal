@@ -67,31 +67,17 @@ namespace DomainSalesPortalWeb.Controllers
             return RedirectToAction("Login");
         }   
 
-
-
-
         public IActionResult Favourite()
         {
-            if (_memoryCache.TryGetValue("Domains", out List<Domain> cacheEntry))
-            {
-                cacheEntry = new List<Domain>();
-            }
-
-            if (cacheEntry==null)
-            {
+            
                 int UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
 
 
                 var result = _uwo.DomainRepository.FindByCustomerId(UserId);
 
-                _memoryCache.Set("Domains", result);
+        
                 return View(result);
-            }
-            else
-            {
-                return View(cacheEntry);
-            }
-
+        
    
           
         }

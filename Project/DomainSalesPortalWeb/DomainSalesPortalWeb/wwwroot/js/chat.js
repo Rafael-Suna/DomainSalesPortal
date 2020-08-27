@@ -43,8 +43,19 @@ start();
 
 connection.on("ReceiveDomains", function (data) {
 
-     
-        alert(data);
+
+
+
+    $.each(data, function (index, value) {
+      
+
+        var id = value.id;
+        var trClass = value.class;
+
+        alert(id + trClass);
+        $('#favTable tbody > tr').eq(id).addClass(trClass);
+
+    });
         console.log(data);
         //var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         //var encodedMsg = user + " says " + msg;

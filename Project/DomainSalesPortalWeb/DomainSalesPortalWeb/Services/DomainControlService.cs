@@ -64,7 +64,22 @@ namespace DomainSalesPortalWeb.Services
 
             var reslt = _uwo.DomainRepository.FindByCustomerId(UserId).ToList();
 
+            foreach (var item in reslt)
+            {
+                if (DateTime.Now.Date >= item.ExpiredDate.Date)
+                {
+                    item.Class = "alert alert-success";
 
+
+
+                }
+                 else
+                {
+                    item.Class = "";
+                }
+
+        
+            }
 
             _client.SendDomains(reslt);
             //if (this.memoryCache.TryGetValue("Domains", out List<Domain> DomainENtry))
