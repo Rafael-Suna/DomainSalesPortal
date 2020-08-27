@@ -12,6 +12,7 @@ using DomainSalesPortalDataLayer;
 using Microsoft.Extensions.Configuration;
 using DomainSalesPortalDataLayer.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace DomainSalesPortalWeb.Controllers
 {
@@ -19,17 +20,17 @@ namespace DomainSalesPortalWeb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-   
 
+        private IMemoryCache _memoryCache;
         UnitOfWork _uwo;
 
         IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration Configuration)
+        public HomeController(ILogger<HomeController> logger, IConfiguration Configuration , IMemoryCache memoryCache)
         {
             _logger = logger;
             _configuration = Configuration;
-
+            _memoryCache = memoryCache;
 
            string connectionString = _configuration.GetConnectionString("Constr");
             _uwo = new UnitOfWork(connectionString);
@@ -71,13 +72,28 @@ namespace DomainSalesPortalWeb.Controllers
 
         public IActionResult Favourite()
         {
+            if (_memoryCache.TryGetValue("Domains", out List<Domain> cacheEntry))
+            {
+                cacheEntry = new List<Domain>();
+            }
+
+            if (cacheEntry==null)
+            {
+                int UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
 
 
-            int UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
+                var result = _uwo.DomainRepository.FindByCustomerId(UserId);
 
+                _memoryCache.Set("Domains", result);
+                return View(result);
+            }
+            else
+            {
+                return View(cacheEntry);
+            }
 
-            var result = _uwo.DomainRepository.FindByCustomerId(UserId);
-            return View(result);
+   
+          
         }
 
         public IActionResult Login()
@@ -101,6 +117,8 @@ namespace DomainSalesPortalWeb.Controllers
 
                     HttpContext.Session.SetString("UserId", result.Id.ToString());
 
+                    _memoryCache.Set("UserId", result.Id.ToString());
+                    
                     return RedirectToAction("Index");
                 }
 
@@ -201,8 +219,8 @@ namespace DomainSalesPortalWeb.Controllers
                 NS1 = FavouriteData.nameservers[0].ldhName,
                 NS2 = FavouriteData.nameservers[1].ldhName,
                 IsFavourite = true,
-                LastChange = FavouriteData.events[1].eventDate,
-                ExpiredDate = FavouriteData.events[2].eventDate
+                LastChange = FavouriteData.events[2].eventDate,
+                ExpiredDate = FavouriteData.events[1].eventDate
 
 
 

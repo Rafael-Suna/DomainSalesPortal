@@ -24,5 +24,7 @@ namespace DomainSalesPortalDataLayer.Entities
 
         public bool IsFavourite { get; set; }
 
+        public string Class { get; set; }
+
     }
 }

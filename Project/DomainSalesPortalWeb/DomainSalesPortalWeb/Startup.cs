@@ -1,14 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DomainSalesPortalDataLayer.Repositories;
+using DomainSalesPortalWeb.Hubs;
+using DomainSalesPortalWeb.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace DomainSalesPortalWeb
@@ -27,9 +32,13 @@ namespace DomainSalesPortalWeb
         {
             services.AddControllersWithViews();
 
-          
+            services.AddMemoryCache();
             services.AddSession();
-
+            services.AddSingleton<IHostedService, DomainControlService>();
+            services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
             //string connectionString = Configuration.GetConnectionString("Constr");
 
 
@@ -55,21 +64,34 @@ namespace DomainSalesPortalWeb
             app.UseSession();
             app.UseAuthorization();
 
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory() + "/wwwroot")),
+                RequestPath = new PathString("")
+            });
             app.UseEndpoints(endpoints =>
             {
+              
+                endpoints.MapHub<DomainHubs>("/domainHubs");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-         //   var options = new RewriteOptions()
-         //   .AddRedirectToHttpsPermanent()
-         //   .AddRedirect("redirect-rule/(.*)", "redirected/$1")
-         //   .AddRewrite(@"^rewrite-rule/(\d+)/(\d+)", "rewritten?var1=$1&var2=$2",
-         //       skipRemainingRules: true);
 
 
-         //app.UseRewriter(options);
+
+
+
+
+            //   var options = new RewriteOptions()
+            //   .AddRedirectToHttpsPermanent()
+            //   .AddRedirect("redirect-rule/(.*)", "redirected/$1")
+            //   .AddRewrite(@"^rewrite-rule/(\d+)/(\d+)", "rewritten?var1=$1&var2=$2",
+            //       skipRemainingRules: true);
+
+
+            //app.UseRewriter(options);
 
         }
     }

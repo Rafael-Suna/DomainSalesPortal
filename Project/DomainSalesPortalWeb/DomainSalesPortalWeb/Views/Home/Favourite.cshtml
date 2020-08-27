@@ -23,7 +23,7 @@
         <tbody>
             @foreach (var item in Model.ToList())
             {
-                <tr id = "@item.Id">
+                <tr id = "@item.Id" class="@item.Class">
                     <th><input type="checkbox" class="ckbox" value="@item.Id" data-id="@item.Id"></th>
                     <td>@item.Name</td>
                     <td>@item.NS1</td>
@@ -38,7 +38,7 @@
     </table>
     <div style="float:right">
 
-        <button class="btn btn-outline-success" asp-action="Favourite" asp-controller="Home" >Refresh</button>
+
         <button class="btnFavourite btn btn-outline-danger">Remove Favourite</button>
     </div>
 
@@ -91,6 +91,12 @@
 
                 });
         });
+
+
+
+
+        $("tbody > tr").css("display", "revert");
+
     </script>
 
 
