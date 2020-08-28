@@ -43,7 +43,7 @@ namespace DomainSalesPortalWeb.Services
             
                 CheckDomains();
 
-                await Task.Delay(1000*10, stoppingToken);
+                await Task.Delay(1000*2, stoppingToken);
             }
 
         }
@@ -60,7 +60,11 @@ namespace DomainSalesPortalWeb.Services
             
             }
             if (UserId == 0)
+            {
+                _client.SendDomains(null);
                 return;
+            }
+             
 
             var reslt = _uwo.DomainRepository.FindByCustomerId(UserId).ToList();
 

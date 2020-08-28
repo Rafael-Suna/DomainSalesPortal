@@ -65,6 +65,8 @@ namespace DomainSalesPortalWeb.Services
             await Connection.StartAsync();
         }
 
+    
+
         public HubConnectionState State()
         {
             return Connection.State;

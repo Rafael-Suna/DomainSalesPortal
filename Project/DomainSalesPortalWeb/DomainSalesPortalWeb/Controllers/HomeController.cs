@@ -64,13 +64,33 @@ namespace DomainSalesPortalWeb.Controllers
         {
             HttpContext.Session.Clear();
             ViewBag.UserName = "";
+            _memoryCache.Set("UserId", "0");
             return RedirectToAction("Login");
         }   
 
         public IActionResult Favourite()
         {
-            
-                int UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
+
+            var checkKey = HttpContext.Session.Keys.ToList();
+
+            if (checkKey.Count == 0)
+            {
+
+
+                return RedirectToAction("Login");
+            }
+
+            var sessionContext = HttpContext.Session.GetString("User");
+
+
+
+            if (sessionContext == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+
+            int UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
 
 
                 var result = _uwo.DomainRepository.FindByCustomerId(UserId);

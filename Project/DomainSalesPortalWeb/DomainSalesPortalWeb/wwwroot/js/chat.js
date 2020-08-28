@@ -28,7 +28,7 @@ async function start() {
         console.log("connected");
     } catch (err) {
         console.log(err);
-        setTimeout(() => start(), 2000);
+        setTimeout(() => start(), 1000);
     }
 };
 
@@ -42,9 +42,9 @@ start();
 
 
 connection.on("ReceiveDomains", function (data) {
-
-
-
+   
+  
+    var count = 0;
 
     $.each(data, function (index, value) {
       
@@ -52,15 +52,28 @@ connection.on("ReceiveDomains", function (data) {
         var id = value.id;
         var trClass = value.class;
 
-     
 
+        if (trClass!="") {
+
+            count = count+1
+
+        }
+
+      
    
 
         $("#" + id + "").addClass(trClass);
 
-
+ 
 
     });
+
+
+
+    var element = document.getElementById("badgeSpan");
+    element.textContent = count;
+       
+  
         console.log(data);
         //var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         //var encodedMsg = user + " says " + msg;
